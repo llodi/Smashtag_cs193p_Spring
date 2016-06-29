@@ -88,6 +88,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     //константы
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
+        static let DetailedSequeIdentifier = "Detailed Tweet"
     }
     
     //релизация показа данных для каждого элемента
@@ -113,14 +114,43 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         searchText = textField.text
         return true
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+   
+    private func getArray(t: Tweet) -> ([Array<AnyObject>],[String]){
+        var mentions = [Array<AnyObject>] ()
+        var mentionType: [String] = []
+        
+        if t.media.count > 0 {
+            mentions.append(t.media)
+            mentionType.append("Images")
+        }
+        if t.hashtags.count > 0 {
+            mentions.append(t.hashtags)
+            mentionType.append("Hashtags")
+        }
+        if t.userMentions.count > 0 {
+            mentions.append(t.userMentions)
+            mentionType.append("Users")
+        }
+        return (mentions,mentionType)
     }
-    */
-
+    
+    // MARK: - Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Storyboard.DetailedSequeIdentifier {
+            if let dttvc = segue.destinationViewController as? DetailedTweetTableViewController {
+                if let tweetCell = (sender as? TweetTableViewCell) {
+                    if let tweet = tweetCell.tweet {
+                        //(dttvc.mentions, dttvc.mentionType)
+                        let m = getArray(tweet)
+                        dttvc.mentions = m.0
+                        dttvc.mentionType = m.1
+                        dttvc.title = tweet.user.name
+                    }
+                }
+            }
+        }
+    }
 }
+
+

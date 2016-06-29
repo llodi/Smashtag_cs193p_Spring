@@ -49,11 +49,9 @@ class TweetTableViewCell: UITableViewCell {
                 myString.addAttribute(NSForegroundColorAttributeName, value: UIColor.orangeColor(), range: userMention.nsrange)
             }
             
-            print("current text in label \(tweetTextLabel?.attributedText)")
             if tweetTextLabel?.attributedText != nil {
                 for _ in tweet.media {
                     myString.appendAttributedString(NSAttributedString(string: " 📷"))
-                    print ("weet.media")
                 }
             }
             

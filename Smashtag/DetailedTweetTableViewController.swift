@@ -17,11 +17,6 @@ class DetailedTweetTableViewController: UITableViewController {
         }
     }
     
-    deinit {
-        print("!!!killed!!!")
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //динамическая высота полей
@@ -41,12 +36,11 @@ class DetailedTweetTableViewController: UITableViewController {
         }
     }
    
-
-   
     //константы
     private struct Storyboard {
         static let MentionImagesCellIdentifier = "Images"
         static let MentionTextCellIdentifier = "Text"
+        static let SearchSegue = "Search Result"
     }
 
 
@@ -74,14 +68,13 @@ class DetailedTweetTableViewController: UITableViewController {
         let mention = mentions[indexPath.section][indexPath.row]
         if let media = mention as? MediaItem {
             let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.MentionImagesCellIdentifier, forIndexPath: indexPath)
-                let contentOfURL = NSData(contentsOfURL: media.url)
-                if let image = contentOfURL {
-                    if let c = cell as? ImagesTableViewCell {
-                        c.imageVar = UIImage(data: image)                      
-                    }
+            if let imageCell = cell as? ImagesTableViewCell {
+                imageCell.url = media.url
             }
             return cell
+            
         } else {
+            
             let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.MentionTextCellIdentifier, forIndexPath: indexPath)
             let textMention = mentions[indexPath.section][indexPath.row]
             if let text = textMention as? Twitter.Mention {
@@ -96,17 +89,26 @@ class DetailedTweetTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return mentionType?[section]
     }
-    
 
 
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == Storyboard.SearchSegue {
+            if let svc = segue.destinationViewController as? SearchResultsTableViewController {
+                if let cell = sender as? TextTableViewCell {
+                    if let text = cell.hashtagLabel.text {
+                        if text.hasPrefix("@") || text.hasPrefix("#") {
+                            svc.searchText = text
+                        }
+                    }
+                }
+            } else if let svc = segue.destinationViewController as? ImageViewController {
+                if let cell = sender as? ImagesTableViewCell {
+                    svc.image = cell.imageVar
+                }
+            }
+        }
     }
-    */
+
 
 }

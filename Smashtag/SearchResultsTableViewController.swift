@@ -1,20 +1,27 @@
 //
-//  TweetTableViewController.swift
-//  Shashtag
+//  SearchResultsTableViewController.swift
+//  Smashtag
 //
-//  Created by Ilya Dolgopolov on 25.06.16.
+//  Created by Ilya Dolgopolov on 30/06/16.
 //  Copyright © 2016 Ilya Dolgopolov. All rights reserved.
 //
 
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate {
-
+class SearchResultsTableViewController: UITableViewController {
+    
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
             tableView.reloadData()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     //переменная поисковая строка
@@ -39,8 +46,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     /*прошлый запрос: те если вы запрашиваете твиты,
-     они еще не загрузились, и вы пустили новый запрос,
-     
+     они еще не загрузились, и вы пустили новый запрос     
      */
     private var lastTwitterRequest: Twitter.Request?
     
@@ -62,16 +68,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             refreshControl?.endRefreshing()
         }
     }
- 
+    
     @IBAction func refreshTweets(sender: UIRefreshControl?) {
         searchForTweets()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //динамическая высота полей
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight  = UITableViewAutomaticDimension
     }
     
     // MARK: - UITableViewDataSource
@@ -79,7 +78,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return tweets.count
     }
-
+    
     //кол-во строк в секции равно кол-ву элементов в одном твитте
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets[section].count
@@ -87,8 +86,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     //константы
     private struct Storyboard {
-        static let TweetCellIdentifier = "Tweet"
-        static let DetailedSequeIdentifier = "Detailed Tweet"
+        static let TweetCellIdentifier = "Searched Tweets"
     }
     
     //релизация показа данных для каждого элемента
@@ -101,60 +99,15 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         return cell
     }
     
-    //работа с поисковой строкой
-    @IBOutlet weak var searchTextField: UITextField! {
-        didSet {
-            searchTextField.delegate = self
-            searchTextField.text = searchText
-        }
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        searchText = textField.text
-        return true
-    }
-    
-   
-    private func getMentionsArray(t: Tweet) -> ([Array<AnyObject>],[String]){
-        var mentions = [Array<AnyObject>] ()
-        var mentionType: [String] = []
-        
-        if t.media.count > 0 {
-            mentions.append(t.media)
-            mentionType.append("Images")
-        }
-        if t.hashtags.count > 0 {
-            mentions.append(t.hashtags)
-            mentionType.append("Hashtags")
-        }
-        if t.userMentions.count > 0 {
-            mentions.append(t.userMentions)
-            mentionType.append("Users")
-        }
-        if t.urls.count > 0 {
-            mentions.append(t.urls)
-            mentionType.append("Urls")
-        }
-        return (mentions,mentionType)
-    }
-    
+
+    /*
     // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == Storyboard.DetailedSequeIdentifier {
-            if let dttvc = segue.destinationViewController as? DetailedTweetTableViewController {
-                if let tweetCell = (sender as? TweetTableViewCell) {
-                    if let tweet = tweetCell.tweet {
-                        //(dttvc.mentions, dttvc.mentionType)
-                        let m = getMentionsArray(tweet)
-                        dttvc.mentions = m.0
-                        dttvc.mentionType = m.1
-                        dttvc.title = tweet.user.name
-                    }
-                }
-            }
-        }
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
+    */
+
 }
-
-

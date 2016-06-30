@@ -19,6 +19,37 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    var ratio = 0.0
+    
+    private func zoomToScale () {
+        //view.bounds.size
+        let widthRatioHor = view.bounds.size.width / imageView.bounds.size.width
+        let heightRatioHor = view.bounds.size.height / imageView.bounds.size.height
+        
+        let widthRatioVer = imageView.bounds.size.width / view.bounds.size.width
+        let heightRatioVer = imageView.bounds.size.height / view.bounds.size.height
+        
+        var scale: CGFloat = 0.0
+        
+        if view.bounds.size.width > view.bounds.size.height {
+            scale = widthRatioHor / heightRatioHor
+        } else {
+            scale = heightRatioVer / widthRatioVer
+        }
+        
+        scrollView.setZoomScale(scale, animated: true)
+        
+        //let height = scrollView.bounds.size.width / CGFloat(ratio)
+        //scrollView.setZoomScale(height, animated: true)
+    }
+    
+    @IBAction func tapToAutoZoom(sender: UITapGestureRecognizer) {
+        switch sender.state {
+        case .Ended: zoomToScale()
+        default: break
+        }
+    }
+    
     private var imageView = UIImageView()
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {

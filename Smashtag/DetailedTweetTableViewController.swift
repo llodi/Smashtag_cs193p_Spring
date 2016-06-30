@@ -105,6 +105,7 @@ class DetailedTweetTableViewController: UITableViewController {
             } else if let svc = segue.destinationViewController as? ImageViewController {
                 if let cell = sender as? ImagesTableViewCell {
                     svc.image = cell.imageVar
+                    svc.ratio = cell.ratio
                 }
             }
         }

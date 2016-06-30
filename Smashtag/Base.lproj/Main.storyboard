@@ -200,6 +200,10 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EnO-O9-V6N">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="9n7-Wc-ad7" appends="YES" id="aVS-sH-7qx"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -215,6 +219,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aE8-KR-ZoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="9n7-Wc-ad7">
+                    <connections>
+                        <action selector="tapToAutoZoom:" destination="oVY-xj-pHp" id="iRf-PD-hRI"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1766" y="546"/>
         </scene>

@@ -8,6 +8,7 @@
 
 import UIKit
 import Twitter
+import SafariServices
 
 class DetailedTweetTableViewController: UITableViewController {
 
@@ -41,6 +42,7 @@ class DetailedTweetTableViewController: UITableViewController {
         static let MentionImagesCellIdentifier = "Images"
         static let MentionTextCellIdentifier = "Text"
         static let SearchSegue = "Search Result"
+        static let WebSegue = "Web Segue"
     }
 
 
@@ -92,6 +94,19 @@ class DetailedTweetTableViewController: UITableViewController {
 
 
     // MARK: - Navigation
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == Storyboard.SearchSegue {
+            if let cell = sender as? TextTableViewCell, let url = cell.hashtagLabel.text
+                where url.hasPrefix("http") {
+                    let safariVC = SFSafariViewController(URL: NSURL(string: url)!)
+                    self.presentViewController(safariVC, animated: true, completion: nil)
+                
+                return false
+            }
+        }
+        return true
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.SearchSegue {
             if let svc = segue.destinationViewController as? SearchResultsTableViewController {
@@ -99,7 +114,7 @@ class DetailedTweetTableViewController: UITableViewController {
                     if let text = cell.hashtagLabel.text {
                         if text.hasPrefix("@") || text.hasPrefix("#") {
                             svc.searchText = text
-                        }
+                        } 
                     }
                 }
             } else if let svc = segue.destinationViewController as? ImageViewController {
@@ -110,6 +125,4 @@ class DetailedTweetTableViewController: UITableViewController {
             }
         }
     }
-
-
 }

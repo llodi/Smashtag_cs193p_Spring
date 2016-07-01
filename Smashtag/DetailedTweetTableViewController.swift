@@ -98,6 +98,7 @@ class DetailedTweetTableViewController: UITableViewController {
         if identifier == Storyboard.SearchSegue {
             if let cell = sender as? TextTableViewCell, let url = cell.hashtagLabel.text
                 where url.hasPrefix("http") {
+                
                     let safariVC = SFSafariViewController(URL: NSURL(string: url)!)
                     self.presentViewController(safariVC, animated: true, completion: nil)
                 

@@ -46,6 +46,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     
     private func searchForTweets () {
+        TweetsTracking.Tracking.add(searchText!)
         if let request = twitterRequest {
             lastTwitterRequest = request
             request.fetchTweets{ [weak weakSelf = self] newTweets in

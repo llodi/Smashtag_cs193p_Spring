@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		533432691D1FB7A500737A81 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533432681D1FB7A500737A81 /* TweetTableViewCell.swift */; };
 		533B11A41D2649E8002D3CDA /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533B11A31D2649E8002D3CDA /* WebViewController.swift */; };
+		533B11A61D268B48002D3CDA /* TweetsTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533B11A51D268B48002D3CDA /* TweetsTracking.swift */; };
 		535BB74E1D22D07400C85B67 /* DetailedTweetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535BB74D1D22D07400C85B67 /* DetailedTweetTableViewController.swift */; };
 		535BB7501D22E17A00C85B67 /* ImagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535BB74F1D22E17A00C85B67 /* ImagesTableViewCell.swift */; };
 		535BB7521D22E19700C85B67 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535BB7511D22E19700C85B67 /* TextTableViewCell.swift */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		533432681D1FB7A500737A81 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 		533B11A31D2649E8002D3CDA /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		533B11A51D268B48002D3CDA /* TweetsTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTracking.swift; sourceTree = "<group>"; };
 		535BB74D1D22D07400C85B67 /* DetailedTweetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedTweetTableViewController.swift; sourceTree = "<group>"; };
 		535BB74F1D22E17A00C85B67 /* ImagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesTableViewCell.swift; sourceTree = "<group>"; };
 		535BB7511D22E19700C85B67 /* TextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextTableViewCell.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				533B11A31D2649E8002D3CDA /* WebViewController.swift */,
+				533B11A51D268B48002D3CDA /* TweetsTracking.swift */,
 				536A1E321D25177100324A61 /* ImageViewController.swift */,
 				537F50581D1EE0D000AB54EF /* Main.storyboard */,
 				535BB74F1D22E17A00C85B67 /* ImagesTableViewCell.swift */,
@@ -189,6 +192,7 @@
 				533B11A41D2649E8002D3CDA /* WebViewController.swift in Sources */,
 				535BB74E1D22D07400C85B67 /* DetailedTweetTableViewController.swift in Sources */,
 				535BB7521D22E19700C85B67 /* TextTableViewCell.swift in Sources */,
+				533B11A61D268B48002D3CDA /* TweetsTracking.swift in Sources */,
 				537F50681D1EE22500AB54EF /* TweetTableViewController.swift in Sources */,
 				533432691D1FB7A500737A81 /* TweetTableViewCell.swift in Sources */,
 				536A1E311D24F3E600324A61 /* SearchResultsTableViewController.swift in Sources */,

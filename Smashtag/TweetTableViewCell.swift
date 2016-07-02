@@ -60,10 +60,16 @@ class TweetTableViewCell: UITableViewCell {
             tweetScreenNameLabel?.text = "\(tweet.user)" //tweet.user.description
             
             if let profileImageURL = tweet.user.profileImageURL {
-                if let imageDate = NSData(contentsOfURL: profileImageURL) { //block main Thread
-                    tweetProfileImageView?.image = UIImage(data: imageDate)
+                
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)) {
+                    let imageDate = NSData(contentsOfURL: profileImageURL)
+                    dispatch_async(dispatch_get_main_queue()) { [weak weakSelf = self] in
+                        if let image = imageDate {
+                            weakSelf?.tweetProfileImageView?.image = UIImage(data: image)
+                        }
+                    }
                 }
-            }
+             }
             
             let formatter = NSDateFormatter()
             if NSDate().timeIntervalSinceDate(tweet.created) > 24*60*60 {

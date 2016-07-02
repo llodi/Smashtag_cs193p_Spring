@@ -9,13 +9,14 @@
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate {
-
+class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
+   
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
             tableView.reloadData()
         }
     }
+
     
     //переменная поисковая строка
     var searchText: String? {
@@ -23,7 +24,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             lastTwitterRequest = nil
             tweets.removeAll()
             searchForTweets()
-            title = searchText
+            print ("title is \(title) and title item bar is \(self.tabBarItem.title)")
+            self.navigationItem.title = searchText
         }
     }
     
@@ -32,6 +34,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     private var twitterRequest: Twitter.Request? {
         if lastTwitterRequest == nil {
             if let query = searchText where !query.isEmpty {
+                TweetsTracking.Tracking.add(searchText!)
                 return Twitter.Request(search: query + " -filter:retweets", count: 100)
             }
         }
@@ -46,7 +49,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     
     private func searchForTweets () {
-        TweetsTracking.Tracking.add(searchText!)
         if let request = twitterRequest {
             lastTwitterRequest = request
             request.fetchTweets{ [weak weakSelf = self] newTweets in

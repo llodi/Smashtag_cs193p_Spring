@@ -15,14 +15,6 @@ class SmashtagBarViewController: UITabBarController, UITabBarControllerDelegate 
         self.delegate = self
     }
     
-    var item: UITabBarItem?
-    
-    
-    // UITabBarDelegate
-    override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        self.item = item
-    }
-    
     // UITabBarControllerDelegate
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
         if let navcon = viewController as? UINavigationController {
@@ -31,15 +23,4 @@ class SmashtagBarViewController: UITabBarController, UITabBarControllerDelegate 
             }
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

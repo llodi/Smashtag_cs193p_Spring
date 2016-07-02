@@ -24,7 +24,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
             lastTwitterRequest = nil
             tweets.removeAll()
             searchForTweets()
-            print ("title is \(title) and title item bar is \(self.tabBarItem.title)")
             self.navigationItem.title = searchText
         }
     }

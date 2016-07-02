@@ -9,7 +9,7 @@
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
+class TweetTableViewController: UITableViewController, UITextFieldDelegate {
    
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
@@ -33,7 +33,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     private var twitterRequest: Twitter.Request? {
         if lastTwitterRequest == nil {
             if let query = searchText where !query.isEmpty {
-                TweetsTracking.Tracking.add(searchText!)
                 return Twitter.Request(search: query + " -filter:retweets", count: 100)
             }
         }
@@ -49,6 +48,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     
     private func searchForTweets () {
         if let request = twitterRequest {
+            TweetsTracking.Tracking.add(searchText!)
             lastTwitterRequest = request
             request.fetchTweets{ [weak weakSelf = self] newTweets in
                 dispatch_async(dispatch_get_main_queue()) {

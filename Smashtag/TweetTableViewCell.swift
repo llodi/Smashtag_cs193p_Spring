@@ -61,7 +61,7 @@ class TweetTableViewCell: UITableViewCell {
             
             if let profileImageURL = tweet.user.profileImageURL {
                 
-                dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)) {
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
                     let imageDate = NSData(contentsOfURL: profileImageURL)
                     dispatch_async(dispatch_get_main_queue()) { [weak weakSelf = self] in
                         if let image = imageDate {

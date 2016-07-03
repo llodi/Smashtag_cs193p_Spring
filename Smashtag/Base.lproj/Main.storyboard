@@ -154,7 +154,13 @@
                             <outlet property="delegate" destination="fTO-Yo-krP" id="Cvb-pk-caG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="X43-cb-WAw"/>
+                    <navigationItem key="navigationItem" id="X43-cb-WAw">
+                        <barButtonItem key="rightBarButtonItem" title="Tweeters" id="Ebi-KR-AJZ">
+                            <connections>
+                                <segue destination="S4Q-yF-lSb" kind="show" identifier="TweetersMentioningSearchTerm" id="oMK-c8-StM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="fUu-gc-nfW">
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
@@ -209,6 +215,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DCt-o0-hM9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="64" y="1404"/>
+        </scene>
+        <!--Tweeters Table View Controller-->
+        <scene sceneID="qKr-Nc-CSO">
+            <objects>
+                <tableViewController id="S4Q-yF-lSb" customClass="TweetersTableViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="0zc-wS-XHs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eqe-GI-0EA">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eqe-GI-0EA" id="mYe-Vq-bd1">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="S4Q-yF-lSb" id="DeI-4E-JKu"/>
+                            <outlet property="delegate" destination="S4Q-yF-lSb" id="aj5-q2-FvY"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i4e-4i-77L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1534" y="-293"/>
         </scene>
         <!--Detailed Tweet Table View Controller-->
         <scene sceneID="hiI-0k-e72">

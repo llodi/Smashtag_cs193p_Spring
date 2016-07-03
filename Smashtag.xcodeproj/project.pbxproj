@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		532DD7971D297563002D300B /* TweetersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532DD7961D297563002D300B /* TweetersTableViewController.swift */; };
+		532DD7BB1D297794002D300B /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 532DD7B91D297794002D300B /* Model.xcdatamodeld */; };
 		533432691D1FB7A500737A81 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533432681D1FB7A500737A81 /* TweetTableViewCell.swift */; };
 		533B11A41D2649E8002D3CDA /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533B11A31D2649E8002D3CDA /* WebViewController.swift */; };
 		533B11A61D268B48002D3CDA /* TweetsTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533B11A51D268B48002D3CDA /* TweetsTracking.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		532DD7961D297563002D300B /* TweetersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetersTableViewController.swift; sourceTree = "<group>"; };
+		532DD7BA1D297794002D300B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		533432681D1FB7A500737A81 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 		533B11A31D2649E8002D3CDA /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		533B11A51D268B48002D3CDA /* TweetsTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTracking.swift; sourceTree = "<group>"; };
@@ -105,6 +109,8 @@
 				53EDB1321D27DC7B000B8B40 /* ImagesCollectionViewController.swift */,
 				53EDB1341D27F186000B8B40 /* ImageCollectionViewCell.swift */,
 				537F50581D1EE0D000AB54EF /* Main.storyboard */,
+				532DD7961D297563002D300B /* TweetersTableViewController.swift */,
+				532DD7B91D297794002D300B /* Model.xcdatamodeld */,
 				53E3303B1D2835A80029BB56 /* ImageCollectionViewLayout.swift */,
 				533B11A31D2649E8002D3CDA /* WebViewController.swift */,
 				533B11A51D268B48002D3CDA /* TweetsTracking.swift */,
@@ -211,6 +217,7 @@
 				533B11A41D2649E8002D3CDA /* WebViewController.swift in Sources */,
 				539C2D1D1D278E8D00142A73 /* SmashtagBarViewController.swift in Sources */,
 				535BB74E1D22D07400C85B67 /* DetailedTweetTableViewController.swift in Sources */,
+				532DD7BB1D297794002D300B /* Model.xcdatamodeld in Sources */,
 				535BB7521D22E19700C85B67 /* TextTableViewCell.swift in Sources */,
 				533B11A61D268B48002D3CDA /* TweetsTracking.swift in Sources */,
 				53E3303E1D28C3D30029BB56 /* CHTCollectionViewWaterfallLayout.swift in Sources */,
@@ -218,6 +225,7 @@
 				537F50681D1EE22500AB54EF /* TweetTableViewController.swift in Sources */,
 				533432691D1FB7A500737A81 /* TweetTableViewCell.swift in Sources */,
 				53E3303C1D2835A80029BB56 /* ImageCollectionViewLayout.swift in Sources */,
+				532DD7971D297563002D300B /* TweetersTableViewController.swift in Sources */,
 				53EDB1351D27F186000B8B40 /* ImageCollectionViewCell.swift in Sources */,
 				536A1E311D24F3E600324A61 /* SearchResultsTableViewController.swift in Sources */,
 				536A1E331D25177100324A61 /* ImageViewController.swift in Sources */,
@@ -380,6 +388,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		532DD7B91D297794002D300B /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				532DD7BA1D297794002D300B /* Model.xcdatamodel */,
+			);
+			currentVersion = 532DD7BA1D297794002D300B /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 537F50491D1EE0D000AB54EF /* Project object */;
 }

@@ -17,9 +17,22 @@ struct ImageTweet {
 }
 
 
-class ImagesCollectionViewController: UICollectionViewController {
+class ImagesCollectionViewController: UICollectionViewController, CHTCollectionViewDelegateWaterfallLayout  {
     
-    private let reuseIdentifier = "Image Cell"
+    private struct Storyboard {
+        static let reuseIdentifier = "Image Cell"
+        static let segueToTweet = "Show Tweet"
+        static let SizeSetting = CGSize(width: 140.0, height: 140.0)
+        
+        static let ColumnCountWaterfall = 3
+        static let minimumColumnSpacing:CGFloat = 2
+        static let minimumInteritemSpacing:CGFloat = 2
+        
+        static let minimumLineSpacing:CGFloat = 2
+        static let minimumInteritemSpacingFlow:CGFloat = 2
+        static let sectionInset = UIEdgeInsets (top: 2, left: 2, bottom: 2, right: 2)
+        static let columnCount:Int = 3
+    }
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,15 +41,43 @@ class ImagesCollectionViewController: UICollectionViewController {
             searchText = first
         }
         
+        // Установка Layout
+        setupLayout()
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        //self.collectionView!.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        
+        refreshControl.addTarget(self, action: #selector(ImagesCollectionViewController.refreshTweets(_:)), forControlEvents: .ValueChanged)
+        
+        collectionView?.addSubview(refreshControl)
     }
     
+    
+    var refreshControl = UIRefreshControl()
+    
+    func refreshTweets(sender: UIRefreshControl?) {
+        if let first = TweetsTracking.Tracking.values.first {
+            searchText = first
+        }
+        searchForTweets()
+        refreshControl.endRefreshing()
+    }
+    
+    
+    var scale: CGFloat = 1 {
+        didSet {
+            collectionView?.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    private var layoutFlow = UICollectionViewFlowLayout()
+    private var layoutWaterfall = CHTCollectionViewWaterfallLayout ()
    
     private var cache = NSCache()
     
@@ -57,7 +98,7 @@ class ImagesCollectionViewController: UICollectionViewController {
             lastTwitterRequest = nil
             tweets.removeAll()
             searchForTweets()
-            //self.navigationItem.title = searchText
+            self.navigationItem.title = searchText
         }
     }
     
@@ -98,15 +139,43 @@ class ImagesCollectionViewController: UICollectionViewController {
     }
 
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == Storyboard.segueToTweet {
+            if let vc = segue.destinationViewController as? TweetTableViewController {
+                if let item = sender as? ImageCollectionViewCell, let media = item.tweetMedia {
+                    vc.tweets = [[media.tweet]]
+                }
+            }
+        }
     }
-    */
+    
+    //MARK: - Настройка Layout CollectionView
+    private func setupLayout(){
+        
+        // Меняем атрибуты для WaterfallLayout
+        
+        // зазоры между ячейками и строками и
+        // количество столбцов - основной параметр настройки
+        
+        layoutWaterfall.columnCount = Storyboard.ColumnCountWaterfall
+        layoutWaterfall.minimumColumnSpacing = Storyboard.minimumColumnSpacing
+        layoutWaterfall.minimumInteritemSpacing = Storyboard.minimumInteritemSpacing
+        
+        // Меняем атрибуты для FlowLayout
+        // зазоры между ячейками и строками и
+        // зазоры для секции
+        
+        layoutFlow.minimumInteritemSpacing = Storyboard.minimumInteritemSpacingFlow
+        layoutFlow.minimumLineSpacing = Storyboard.minimumLineSpacing
+        layoutFlow.sectionInset = Storyboard.sectionInset
+        
+        // устанавливаем Waterfall layout нашему collection view
+        collectionView?.collectionViewLayout = layoutFlow
+    }
 
     // MARK: UICollectionViewDataSource
 
@@ -123,13 +192,43 @@ class ImagesCollectionViewController: UICollectionViewController {
     
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Storyboard.reuseIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
 
         //cell.cache = cache
         cell.tweetMedia = images[indexPath.row]
 
         return cell
     }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if collectionView.collectionViewLayout is CHTCollectionViewWaterfallLayout{
+            let newColumnNumber = Int(CGFloat(Storyboard.ColumnCountWaterfall) / scale)
+            (collectionView.collectionViewLayout
+                as! CHTCollectionViewWaterfallLayout).columnCount =
+                newColumnNumber < 1 ? 1 :newColumnNumber
+        }
+       
+        let ratio = CGFloat(images[indexPath.row].image.aspectRatio)
+        let maxCellWidth = collectionView.bounds.size.width
+        var size = CGSize(width: Storyboard.SizeSetting.width * scale,
+                          height: Storyboard.SizeSetting.height * scale)
+        if ratio > 1 {
+            size.height /= ratio
+        } else {
+            size.width *= ratio
+        }
+        if size.width > maxCellWidth {
+            size.width = maxCellWidth
+            size.height = size.width / ratio
+        }
+        return size
+    }
+    /*
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let leftRightInset = self.view.frame.size.width / 14.0
+        return UIEdgeInsetsMake(0, leftRightInset, 0, leftRightInset)
+    }*/
 
     // MARK: UICollectionViewDelegate
 

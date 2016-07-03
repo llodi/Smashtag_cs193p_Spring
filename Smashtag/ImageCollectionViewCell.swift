@@ -33,14 +33,24 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private func fetchImage () {
         if let u = imageURL {
             spinner?.startAnimating()
+            
+            let imageData = cache?.objectForKey(imageURL!) as? NSData
+            
+            if imageData != nil {
+                self.image = UIImage(data: imageData!)
+                return
+            }
+            
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                let contentsOfURL = NSData(contentsOfURL: u)
-                dispatch_async(dispatch_get_main_queue()) {
-                    if u == self.imageURL {
-                        if let imageData = contentsOfURL {
-                            self.image = UIImage(data: imageData)
+                let imageData = NSData(contentsOfURL: u)
+                dispatch_async(dispatch_get_main_queue()) { [weak weakSelf = self] in
+                    if u == weakSelf?.imageURL {
+                        if let imageData = imageData {
+                            weakSelf?.image = UIImage(data: imageData)
+                            weakSelf?.cache?.setObject(imageData, forKey: self.imageURL!, cost: imageData.length / 1024)
                         } else {
-                            self.spinner.stopAnimating()
+                            weakSelf?.image = nil
+                            weakSelf?.spinner.stopAnimating()
                         }
                     }
                 }

@@ -14,40 +14,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KxQ-Jv-XZE">
-                            <size key="itemSize" width="120" height="120"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
+                        <collectionViewLayout key="collectionViewLayout" id="2ph-cd-cIe"/>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Show Image Cell" id="phP-rD-HeS" customClass="ImageCollectionViewCell" customModule="Smashtag" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="Image Cell" id="phP-rD-HeS" customClass="ImageCollectionViewCell" customModule="Smashtag" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="120" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="itc-WD-x7G">
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="itc-WD-x7G">
                                             <rect key="frame" x="50" y="50" width="20" height="20"/>
                                         </activityIndicatorView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xM5-FU-6fM">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xM5-FU-6fM">
                                             <rect key="frame" x="8" y="8" width="104" height="104"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <constraints>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="trailing" secondItem="phP-rD-HeS" secondAttribute="trailingMargin" id="EFc-0H-wJD"/>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="top" secondItem="phP-rD-HeS" secondAttribute="topMargin" id="RbT-vm-B0w"/>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="leading" secondItem="phP-rD-HeS" secondAttribute="leadingMargin" id="WPU-AM-JZI"/>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="bottom" secondItem="phP-rD-HeS" secondAttribute="bottomMargin" id="mN3-NE-OIr"/>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="centerY" secondItem="itc-WD-x7G" secondAttribute="centerY" id="tYb-Ft-6vu"/>
-                                    <constraint firstItem="xM5-FU-6fM" firstAttribute="centerX" secondItem="itc-WD-x7G" secondAttribute="centerX" id="x69-VI-xbe"/>
-                                </constraints>
+                                <size key="customSize" width="120" height="120"/>
                                 <connections>
                                     <outlet property="imageView" destination="xM5-FU-6fM" id="Vzg-Tr-Rgo"/>
                                     <outlet property="spinner" destination="itc-WD-x7G" id="EEc-zo-PlW"/>
+                                    <segue destination="fTO-Yo-krP" kind="show" identifier="Show Tweet" id="umy-Iy-hV3"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -56,11 +45,11 @@
                             <outlet property="delegate" destination="fUz-dO-Iyb" id="f6I-Kr-AqV"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" systemItem="mostRecent" id="l9W-Lr-Tms"/>
+                    <navigationItem key="navigationItem" id="MUa-sh-tEf"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sls-lH-zTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1135" y="-552"/>
+            <point key="canvasLocation" x="-323" y="-552"/>
         </scene>
         <!--Smashtag Bar View Controller-->
         <scene sceneID="6h9-oC-0rG">
@@ -74,7 +63,7 @@
                     <connections>
                         <segue destination="wAr-gU-DMn" kind="relationship" relationship="viewControllers" id="W0t-ar-q4d"/>
                         <segue destination="3vI-Oh-ddf" kind="relationship" relationship="viewControllers" id="gJt-Ko-yFB"/>
-                        <segue destination="fUz-dO-Iyb" kind="relationship" relationship="viewControllers" id="U4t-wR-qZR"/>
+                        <segue destination="daM-jN-GFy" kind="relationship" relationship="viewControllers" id="U4t-wR-qZR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4w-7U-tNe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -237,6 +226,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="131"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nfn-PO-JYH">
+                                            <rect key="frame" x="290" y="56" width="20" height="20"/>
+                                        </activityIndicatorView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="4V7-aT-c2M">
                                             <rect key="frame" x="8" y="8" width="584" height="115"/>
                                             <subviews>
@@ -245,9 +237,6 @@
                                                 </imageView>
                                             </subviews>
                                         </stackView>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nfn-PO-JYH">
-                                            <rect key="frame" x="290" y="56" width="20" height="20"/>
-                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="topMargin" secondItem="4V7-aT-c2M" secondAttribute="top" id="BXT-6D-2ks"/>
@@ -464,8 +453,27 @@
             </objects>
             <point key="canvasLocation" x="-931" y="1420"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="kr6-Ow-rZV">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="daM-jN-GFy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="mostRecent" id="l9W-Lr-Tms"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mlV-SN-Dhe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="fUz-dO-Iyb" kind="relationship" relationship="rootViewController" id="T5M-0x-ijY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pe4-8H-LsK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1135" y="-552"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Ekg-M9-eYt"/>
+        <segue reference="umy-Iy-hV3"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -15,15 +15,11 @@ class RecentTweetsTableViewController: UITableViewController {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         if TweetsTracking.Tracking.values.count > 0 {
-            let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(RecentTweetsTableViewController.edit(_:)))
-            navigationItem.rightBarButtonItem = editButton
+        //    let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(RecentTweetsTableViewController.edit(_:)))
+            //navigationItem.rightBarButtonItem = editButton
+            self.navigationItem.rightBarButtonItem = self.editButtonItem()
         }
     }
-    
-    @objc private func edit (sender: UIBarButtonItem) {
-        self.editing = !self.editing
-    }
-
 
     // MARK: - Table view data source
 

@@ -15,11 +15,31 @@ class SmashtagBarViewController: UITabBarController, UITabBarControllerDelegate 
         self.delegate = self
     }
     
+    var clickedItemOld: UITabBarItem?
+    
+    var clickedItem: UITabBarItem? {
+        didSet {
+            clickedItemOld = oldValue
+        }
+    }
+    
+    override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        clickedItem = item
+    }
+    
+ 
     // UITabBarControllerDelegate
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        if let navcon = viewController as? UINavigationController {
-            if let vc = navcon.visibleViewController as? UITableViewController {
-                vc.tableView.setContentOffset(CGPointZero, animated: true)
+        
+        if tabBarController.tabBar.selectedItem == clickedItemOld ?? tabBarController.tabBar.selectedItem {
+            if let navcon = viewController as? UINavigationController {
+                if let vc = navcon.visibleViewController as? UITableViewController {
+                    vc.tableView.scrollRectToVisible(vc.tableView.frame, animated: true)
+                }
+                
+                if let vc = navcon.visibleViewController as? UICollectionViewController {
+                    vc.collectionView?.scrollRectToVisible(vc.collectionView!.frame, animated: true)
+                }
             }
         }
     }

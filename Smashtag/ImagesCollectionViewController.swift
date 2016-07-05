@@ -12,8 +12,8 @@ import Twitter
 
 
 struct ImageTweet {
-    var tweet: Tweet
-    var image: MediaItem
+    var tweet: Twitter.Tweet
+    var image: Twitter.MediaItem
 }
 
 

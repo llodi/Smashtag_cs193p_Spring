@@ -7,27 +7,65 @@
 //
 
 import UIKit
+import CoreData
 
-class TweetersTableViewController: UITableViewController {
+class TweetersTableViewController: CoreDataTableViewController {
 
-     /*
+    var mention: String? { didSet { updateUI() } }
+    
+    var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
+    
+    
+    private func updateUI() {
+        if let context = managedObjectContext where mention?.characters.count > 0 {
+            let request = NSFetchRequest(entityName: "TweeterUser")
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
+            request.sortDescriptors = [NSSortDescriptor(
+                key: "screenName",
+                ascending: true,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                )]
+            fetchedResultsController = NSFetchedResultsController(
+                fetchRequest: request,
+                managedObjectContext: context,
+                sectionNameKeyPath: nil,
+                cacheName: nil
+             )
+        } else {
+            fetchedResultsController = nil
+        }
+    }
+    
+    private func tweetCountWithMentionByTweeterUser(user: TweeterUser) -> Int? {
+        var count: Int?
+        
+        user.managedObjectContext?.performBlockAndWait{
+            let request = NSFetchRequest(entityName: "Tweet")
+            request.predicate = NSPredicate(format: "text contains[c] %@ and tweeter = %@", self.mention!, user)
+            count = user.managedObjectContext?.countForFetchRequest(request, error: nil)
+        }
+        return count
+    }
+    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCellWithIdentifier("TwitterUserCell", forIndexPath: indexPath)
+        
+        if let tweeterUser = fetchedResultsController?.objectAtIndexPath(indexPath) as? TweeterUser {
+            var screenName: String?
+            tweeterUser.managedObjectContext?.performBlockAndWait {
+                screenName = tweeterUser.screenName
+            }
+            cell.textLabel?.text = screenName
+            if let count = tweetCountWithMentionByTweeterUser(tweeterUser) {
+                cell.detailTextLabel?.text = (count == 1) ? "1 tweet" : "\(count) tweets"
+            } else {
+                cell.detailTextLabel?.text = ""
+            }
+        }
 
         return cell
     }
-    */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

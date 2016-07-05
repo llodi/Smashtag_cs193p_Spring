@@ -8,6 +8,7 @@
 
 import UIKit
 import Twitter
+import CoreData
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
    
@@ -16,6 +17,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             tableView.reloadData()
         }
     }
+    
+    var managedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
 
     
     //переменная поисковая строка
@@ -55,6 +58,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     if request == weakSelf?.lastTwitterRequest {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, atIndex: 0)
+                            weakSelf?.updateDatabase(newTweets)
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -62,6 +66,31 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         } else {
             refreshControl?.endRefreshing()
+        }
+    }
+    
+    private func updateDatabase(newTweets: [Twitter.Tweet]) {
+        managedObjectContext?.performBlock {
+            for twitterInfo in newTweets {
+                _ = Tweet.tweetWithTwitterInfo(twitterInfo, inManagedObjectContext: self.managedObjectContext!)
+            }
+            do {
+                try self.managedObjectContext?.save()
+            } catch let error {
+                print("Core Data Error: \(error)")
+            }
+        }
+        printDatabaseStatistics()	
+        print("Print Staticstics Done!")
+    }
+    
+    private func printDatabaseStatistics() {
+        managedObjectContext?.performBlock{
+            if let result = try? self.managedObjectContext!.executeFetchRequest(NSFetchRequest(entityName: "TweeterUser")) {
+                print("\(result.count) TweeterUser")
+            }
+            let tweetCount = self.managedObjectContext!.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+            print("\(tweetCount) tweets")
         }
     }
  
@@ -91,6 +120,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
         static let DetailedSequeIdentifier = "Detailed Tweet"
+        static let TweetersMentioningSearchTermSegue = "TweetersMentioningSearchTerm"
     }
     
     //релизация показа данных для каждого элемента
@@ -118,7 +148,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
    
-    private func getMentionsArray(t: Tweet) -> ([Array<AnyObject>],[String]){
+    private func getMentionsArray(t: Twitter.Tweet) -> ([Array<AnyObject>],[String]){
         var mentions = [Array<AnyObject>] ()
         var mentionType: [String] = []
         
@@ -154,6 +184,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                         dttvc.title = tweet.user.name
                     }
                 }
+            }
+        }
+        if segue.identifier == Storyboard.TweetersMentioningSearchTermSegue {
+            if let tTVC = segue.destinationViewController as? TweetersTableViewController {
+                tTVC.mention = searchText
+                tTVC.managedObjectContext = managedObjectContext
             }
         }
     }

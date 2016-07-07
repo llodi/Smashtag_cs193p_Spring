@@ -1,4 +1,4 @@
-//
+ //
 //  Tweet.swift
 //  Smashtag
 //
@@ -23,7 +23,7 @@ class Tweet: NSManagedObject {
             tweet.unique = twitterInfo.id
             tweet.text = twitterInfo.text
             tweet.posted = twitterInfo.created
-            tweet.tweeter = TweeterUser.twitterUserWithTwitterInfo(twitterInfo.user, inManagedObjectContext: context)
+            tweet.tweeter  = TweeterUser.twitterUserWithTwitterInfo(twitterInfo.user, inManagedObjectContext: context)
             return tweet
         }
         

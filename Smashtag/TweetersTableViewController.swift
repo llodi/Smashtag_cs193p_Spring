@@ -42,7 +42,7 @@ class TweetersTableViewController: CoreDataTableViewController {
         user.managedObjectContext?.performBlockAndWait{
             let request = NSFetchRequest(entityName: "Tweet")
             request.predicate = NSPredicate(format: "text contains[c] %@ and tweeter = %@", self.mention!, user)
-            count = user.managedObjectContext?.countForFetchRequest(request, error: nil)
+            count = user.managedObjectContext?.countForFetchRequest(request, error: nil)            
         }
         return count
     }
@@ -57,7 +57,8 @@ class TweetersTableViewController: CoreDataTableViewController {
                 screenName = tweeterUser.screenName
             }
             cell.textLabel?.text = screenName
-            if let count = tweetCountWithMentionByTweeterUser(tweeterUser) {
+            if let count = tweetCountWithMentionByTweeterUser(tweeterUser)
+            {
                 cell.detailTextLabel?.text = (count == 1) ? "1 tweet" : "\(count) tweets"
             } else {
                 cell.detailTextLabel?.text = ""

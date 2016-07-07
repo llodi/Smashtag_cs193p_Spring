@@ -45,7 +45,6 @@ class TweeterUser: NSManagedObject {
             try context.save()
         } catch let error {
             print("Core Data Error: \(error)")
-        }        
-        
+        }
     }
 }

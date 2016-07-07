@@ -25,7 +25,7 @@ class TweetersTableViewController: CoreDataTableViewController {
         if let context = managedObjectContext where mention?.characters.count > 0 {
             TweeterUser.tweetCountWithMentionByTweeterUser(inManagedObjectContext: context, withPredicate: mention!)
             let request = NSFetchRequest(entityName: "TweeterUser")
-            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@ and count > 1", mention!, "waleed")
             request.sortDescriptors = [NSSortDescriptor(
                 key: "count",
                 ascending: false,

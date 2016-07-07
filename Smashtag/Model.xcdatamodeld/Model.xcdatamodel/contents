@@ -11,9 +11,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="tweeter" inverseEntity="Tweet" syncable="YES"/>
+        <fetchedProperty name="count2" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="TweeterUser"/>
+        </fetchedProperty>
     </entity>
     <elements>
         <element name="Tweet" positionX="-821" positionY="-76" width="128" height="103"/>
-        <element name="TweeterUser" positionX="-369" positionY="-45" width="128" height="103"/>
+        <element name="TweeterUser" positionX="-387" positionY="-54" width="128" height="131"/>
     </elements>
 </model>

@@ -25,8 +25,7 @@ class Tweet: NSManagedObject {
             tweet.posted = twitterInfo.created
             tweet.tweeter  = TweeterUser.twitterUserWithTwitterInfo(twitterInfo.user, inManagedObjectContext: context)
             return tweet
-        }
-        
+        }        
         return nil
     }
     

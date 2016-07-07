@@ -11,16 +11,26 @@ import CoreData
 
 class TweetersTableViewController: CoreDataTableViewController {
 
-    var mention: String? { didSet { updateUI() } }
+    var mention: String? {
+        didSet {
+            
+            updateUI()
+        }
+    }
     
     var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
     
     
     private func updateUI() {
         if let context = managedObjectContext where mention?.characters.count > 0 {
+            TweeterUser.tweetCountWithMentionByTweeterUser(inManagedObjectContext: context, withPredicate: mention!)
             let request = NSFetchRequest(entityName: "TweeterUser")
             request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
             request.sortDescriptors = [NSSortDescriptor(
+                key: "count",
+                ascending: false,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                ), NSSortDescriptor(
                 key: "screenName",
                 ascending: true,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
@@ -57,7 +67,7 @@ class TweetersTableViewController: CoreDataTableViewController {
                 screenName = tweeterUser.screenName
             }
             cell.textLabel?.text = screenName
-            if let count = tweetCountWithMentionByTweeterUser(tweeterUser)
+            if let count = tweeterUser.count//tweetCountWithMentionByTweeterUser(tweeterUser)
             {
                 cell.detailTextLabel?.text = (count == 1) ? "1 tweet" : "\(count) tweets"
             } else {

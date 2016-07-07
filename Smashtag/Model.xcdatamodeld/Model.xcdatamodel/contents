@@ -7,12 +7,13 @@
         <relationship name="tweeter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TweeterUser" inverseName="tweets" inverseEntity="TweeterUser" syncable="YES"/>
     </entity>
     <entity name="TweeterUser" representedClassName=".TweeterUser" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="tweeter" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Tweet" positionX="-38" positionY="48" width="128" height="103"/>
-        <element name="TweeterUser" positionX="-342" positionY="-12" width="128" height="88"/>
+        <element name="Tweet" positionX="-821" positionY="-76" width="128" height="103"/>
+        <element name="TweeterUser" positionX="-369" positionY="-45" width="128" height="103"/>
     </elements>
 </model>

@@ -24,8 +24,28 @@ class TweeterUser: NSManagedObject {
             user.name = twitterInfo.name
             return user
         }
-        
         return nil	
     }
     
+    class func tweetCountWithMentionByTweeterUser(inManagedObjectContext context: NSManagedObjectContext, withPredicate predicate: String) {
+        let requestUsers = NSFetchRequest(entityName: "TweeterUser")
+        requestUsers.predicate = NSPredicate(format: "any tweets.text contains[c] %@", predicate)
+        if let users = (try? context.executeFetchRequest(requestUsers)) as? [TweeterUser] {
+            for u in users {
+                var count = 0
+                let request = NSFetchRequest(entityName: "Tweet")
+                request.predicate = NSPredicate(format: "text contains[c] %@ and tweeter = %@", predicate, u)
+                context.performBlockAndWait {
+                    count = context.countForFetchRequest(request, error: nil)
+                }
+                u.count = count
+            }
+        }
+        do {
+            try context.save()
+        } catch let error {
+            print("Core Data Error: \(error)")
+        }        
+        
+    }
 }

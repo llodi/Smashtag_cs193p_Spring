@@ -31,6 +31,7 @@ class RecentTweetsTableViewController: UITableViewController {
     private struct Storyboard {
         static let cellIdentifier = "Recent"
         static let segueIdentifier = "Show Recent Result"
+        static let topMetionsListSegue = "TopMetionsList"
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,10 +87,13 @@ class RecentTweetsTableViewController: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == Storyboard.segueIdentifier {
-            if let tvc = segue.destinationViewController as? TweetTableViewController {
-                if let cell = sender as? UITableViewCell {
-                    tvc.searchText = cell.textLabel?.text
-                }
+            if let tvc = segue.destinationViewController as? TweetTableViewController {                    tvc.searchText = (sender as? UITableViewCell)?.textLabel?.text
+
+            }
+        }
+        if segue.identifier == Storyboard.topMetionsListSegue {
+            if let topVc = segue.destinationViewController as? MentionsTopTableViewController {
+                topVc.mention = (sender as? UITableViewCell)?.textLabel?.text
             }
         }
     }

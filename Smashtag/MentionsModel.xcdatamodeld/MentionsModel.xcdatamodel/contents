@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Xcode 7.0">
-    <elements/>
+    <entity name="Mention" representedClassName=".Mention" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SearchedTweet" inverseName="mention" inverseEntity="SearchedTweet" syncable="YES"/>
+    </entity>
+    <entity name="SearchedTweet" representedClassName=".SearchedTweet" syncable="YES">
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mention" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SearchedTweet" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="Mention" positionX="133" positionY="45" width="128" height="103"/>
+    </elements>
 </model>

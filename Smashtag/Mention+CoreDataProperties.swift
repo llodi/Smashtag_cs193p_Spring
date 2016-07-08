@@ -1,5 +1,5 @@
 //
-//  Tweet+CoreDataProperties.swift
+//  Mention+CoreDataProperties.swift
 //  Smashtag
 //
 //  Created by Ilya Dolgopolov on 08.07.16.
@@ -12,11 +12,11 @@
 import Foundation
 import CoreData
 
-extension Tweet {
+extension Mention {
 
-    @NSManaged var posted: NSDate?
+    @NSManaged var count: NSNumber?
+    @NSManaged var type: String?
     @NSManaged var text: String?
-    @NSManaged var unique: String?
-    @NSManaged var tweeter: TweeterUser?
+    @NSManaged var tweets: NSSet?
 
 }

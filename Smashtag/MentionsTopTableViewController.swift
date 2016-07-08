@@ -12,18 +12,51 @@ import CoreData
 class MentionsTopTableViewController: CoreDataTableViewController {
     
     var mention: String? { didSet { updateUI() } }
+    private var mentionsManagedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.mentionsManagedObjectContext{ didSet { updateUI() } }
     
-    var managedObjectContext: NSManagedObjectContext? { didSet { updateUI() } }
-    
-    private func updateUI() {
-        
+    private func updateUI() {        
+        if let context = mentionsManagedObjectContext where mention?.characters.count > 0  {
+            Mention.mentionCountWithMention(inManagedObjectContext: context, withPredicate: mention!)
+            let request = NSFetchRequest(entityName: "Mention")
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and count > 1", mention!)
+            request.sortDescriptors = [NSSortDescriptor(
+                key: "count",
+                ascending: false,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                ), NSSortDescriptor(
+                key: "text",
+                ascending: true,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                )]
+            fetchedResultsController = NSFetchedResultsController(
+                fetchRequest: request,
+                managedObjectContext: context,
+                sectionNameKeyPath: nil,
+                cacheName: nil
+            )
+        } else {
+            fetchedResultsController = nil
+        }
     }
  
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TopMetionsList", forIndexPath: indexPath)
-
-        cell.textLabel?.text = "test"
+        let cell = tableView.dequeueReusableCellWithIdentifier("mentionItem", forIndexPath: indexPath)
+        
+        if let mention = fetchedResultsController?.objectAtIndexPath(indexPath) as? Mention {
+            var text: String?
+            
+            mention.managedObjectContext?.performBlockAndWait{
+                text = mention.text
+            }
+            cell.textLabel?.text = text
+            if let count = mention.count
+            {
+                cell.detailTextLabel?.text = (count == 1) ? "1 tweet" : "\(count) tweets"
+            } else {
+                cell.detailTextLabel?.text = ""
+            }
+        }
 
         return cell
     }

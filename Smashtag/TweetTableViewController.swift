@@ -19,6 +19,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     var managedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
+    var mentionsMangedObjContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.mentionsManagedObjectContext
 
     
     //переменная поисковая строка
@@ -80,7 +81,18 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 print("Core Data Error: \(error)")
             }
         }
-        printDatabaseStatistics()	
+        
+        mentionsMangedObjContext?.performBlock {
+            for mentionInfo in newTweets {
+                _ = SearchedTweet.tweetWithMentionInfo(mentionInfo, inManagedObjectContext: self.mentionsMangedObjContext!)
+            }
+            do {
+                try self.mentionsMangedObjContext?.save()
+            } catch let error {
+                print("Core Data Error: \(error)")
+            }
+        }
+        printDatabaseStatistics()
         print("Print Staticstics Done!")
     }
     
@@ -91,6 +103,13 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
             let tweetCount = self.managedObjectContext!.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
             print("\(tweetCount) tweets")
+        }
+        mentionsMangedObjContext?.performBlock {
+            let tweetsCount = self.mentionsMangedObjContext!.countForFetchRequest(NSFetchRequest(entityName: "SearchedTweet"), error: nil)
+            print("\(tweetsCount) tweets")
+            
+            let mentionsCount = self.mentionsMangedObjContext!.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            print("\(mentionsCount) mentions")
         }
     }
  

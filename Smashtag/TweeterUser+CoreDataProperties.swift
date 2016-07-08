@@ -2,7 +2,7 @@
 //  TweeterUser+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Ilya Dolgopolov on 07.07.16.
+//  Created by Ilya Dolgopolov on 08.07.16.
 //  Copyright © 2016 Ilya Dolgopolov. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,9 +14,9 @@ import CoreData
 
 extension TweeterUser {
 
+    @NSManaged var count: NSNumber?
     @NSManaged var name: String?
     @NSManaged var screenName: String?
-    @NSManaged var count: NSNumber?
     @NSManaged var tweets: NSSet?
 
 }

@@ -15,8 +15,7 @@ import CoreData
 extension Mention {
 
     @NSManaged var count: NSNumber?
-    @NSManaged var type: String?
     @NSManaged var text: String?
+    @NSManaged var type: String?
     @NSManaged var tweets: NSSet?
-
 }

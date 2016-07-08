@@ -14,8 +14,7 @@ import CoreData
 
 extension SearchedTweet {
 
-    @NSManaged var uniqueId: String?
     @NSManaged var text: String?
-    @NSManaged var mention: Mention?
-
+    @NSManaged var uniqueId: String?
+    @NSManaged var mention: NSSet?
 }

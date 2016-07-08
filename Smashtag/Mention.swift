@@ -32,7 +32,7 @@ class Mention: NSManagedObject {
             for m in mentions {
                 var count = 0
                 let request = NSFetchRequest(entityName: "SearchedTweet")
-                request.predicate = NSPredicate(format: "text contains[c] %@ and mention = %@", predicate, m)
+                request.predicate = NSPredicate(format: "any text contains[c] %@ and mention contains[c] %@", predicate, m)
                 context.performBlockAndWait {
                     count = context.countForFetchRequest(request, error: nil)
                 }

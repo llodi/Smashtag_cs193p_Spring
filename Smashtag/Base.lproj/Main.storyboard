@@ -82,7 +82,7 @@
                             <rect key="frame" x="0.0" y="64" width="600" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                            <textInputTraits key="textInputTraits" keyboardType="twitter"/>
+                            <textInputTraits key="textInputTraits" keyboardType="twitter" returnKeyType="done"/>
                         </textField>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tweet" rowHeight="159" id="rVw-j2-dUc" customClass="TweetTableViewCell" customModule="Smashtag" customModuleProvider="target">

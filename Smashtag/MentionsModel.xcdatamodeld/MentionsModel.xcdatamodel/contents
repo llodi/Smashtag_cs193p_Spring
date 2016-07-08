@@ -9,10 +9,10 @@
     <entity name="SearchedTweet" representedClassName=".SearchedTweet" syncable="YES">
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mention" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="mention" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SearchedTweet" positionX="-63" positionY="-18" width="128" height="88"/>
         <element name="Mention" positionX="133" positionY="45" width="128" height="103"/>
+        <element name="SearchedTweet" positionX="-180" positionY="-18" width="128" height="88"/>
     </elements>
 </model>

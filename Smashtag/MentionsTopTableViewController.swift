@@ -14,11 +14,12 @@ class MentionsTopTableViewController: CoreDataTableViewController {
     var mention: String? { didSet { updateUI() } }
     private var mentionsManagedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.mentionsManagedObjectContext{ didSet { updateUI() } }
     
-    private func updateUI() {        
+    private func updateUI() {
+        statistics ()
         if let context = mentionsManagedObjectContext where mention?.characters.count > 0  {
             Mention.mentionCountWithMention(inManagedObjectContext: context, withPredicate: mention!)
             let request = NSFetchRequest(entityName: "Mention")
-            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and count > 1", mention!)
+            request.predicate = NSPredicate(format: "any tweets.text contains %@", mention!)
             request.sortDescriptors = [NSSortDescriptor(
                 key: "count",
                 ascending: false,
@@ -36,6 +37,18 @@ class MentionsTopTableViewController: CoreDataTableViewController {
             )
         } else {
             fetchedResultsController = nil
+        }
+    }
+    
+    private func statistics () {
+        if let context = mentionsManagedObjectContext where mention?.characters.count > 0  {
+            let request = NSFetchRequest(entityName: "Mention")
+            request.predicate = NSPredicate(format: "any tweets.text contains %@", mention!)
+            context.performBlockAndWait{
+                if let res = try? context.executeFetchRequest(request) {
+                    print ("\(res.count) records returned")
+                }
+            }
         }
     }
  

@@ -21,15 +21,20 @@ class SearchedTweet: NSManagedObject {
         } else if let tweet = NSEntityDescription.insertNewObjectForEntityForName("SearchedTweet", inManagedObjectContext: context) as? SearchedTweet {
             tweet.uniqueId = mentionInfo.id
             tweet.text = mentionInfo.text
+            var mentionsArray: [Mention] = []
             for mn in mentionInfo.hashtags {
-                tweet.mention = Mention.mentionWithMentionInfo(mn, withType: "hashtag", inManagedObjectContext: context)
+                let m = Mention.mentionWithMentionInfo(mn, withType: "hashtag", inManagedObjectContext: context)
+                mentionsArray.append(m!)
             }
-            
             for um in mentionInfo.userMentions {
-                tweet.mention = Mention.mentionWithMentionInfo(um, withType: "userMentions", inManagedObjectContext: context)
-            }
+                let m = Mention.mentionWithMentionInfo(um, withType: "userMentions", inManagedObjectContext: context)
+                mentionsArray.append(m!)
+            }            
+            tweet.mention = NSSet(array: mentionsArray)
+            
             return tweet
         }
         return nil
     }
+
 }

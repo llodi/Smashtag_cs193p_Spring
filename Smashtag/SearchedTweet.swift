@@ -23,11 +23,11 @@ class SearchedTweet: NSManagedObject {
             tweet.text = mentionInfo.text
             var mentionsArray: [Mention] = []
             for mn in mentionInfo.hashtags {
-                let m = Mention.mentionWithMentionInfo(mn, withType: "hashtag", inManagedObjectContext: context)
+                let m = Mention.mentionWithMentionInfo(mn, withType: "Hashtags", inManagedObjectContext: context)
                 mentionsArray.append(m!)
             }
             for um in mentionInfo.userMentions {
-                let m = Mention.mentionWithMentionInfo(um, withType: "userMentions", inManagedObjectContext: context)
+                let m = Mention.mentionWithMentionInfo(um, withType: "UserMentions", inManagedObjectContext: context)
                 mentionsArray.append(m!)
             }            
             tweet.mention = NSSet(array: mentionsArray)

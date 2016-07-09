@@ -19,7 +19,7 @@ class MentionsTopTableViewController: CoreDataTableViewController {
         if let context = mentionsManagedObjectContext where mention?.characters.count > 0  {
             Mention.mentionCountWithMention(inManagedObjectContext: context, withPredicate: mention!)
             let request = NSFetchRequest(entityName: "Mention")
-            request.predicate = NSPredicate(format: "any tweets.text contains %@", mention!)
+            request.predicate = NSPredicate(format: "any tweets.text contains %@ and count > 1", mention!)
             request.sortDescriptors = [NSSortDescriptor(
                 key: "count",
                 ascending: false,
@@ -32,9 +32,10 @@ class MentionsTopTableViewController: CoreDataTableViewController {
             fetchedResultsController = NSFetchedResultsController(
                 fetchRequest: request,
                 managedObjectContext: context,
-                sectionNameKeyPath: nil,
+                sectionNameKeyPath: "type",
                 cacheName: nil
             )
+            //fetchedResultsController?.sections =
         } else {
             fetchedResultsController = nil
         }
@@ -51,7 +52,6 @@ class MentionsTopTableViewController: CoreDataTableViewController {
             }
         }
     }
- 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("mentionItem", forIndexPath: indexPath)

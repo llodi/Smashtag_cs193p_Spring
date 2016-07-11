@@ -22,15 +22,15 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
     private struct Storyboard {
         static let reuseIdentifier = "Image Cell"
         static let segueToTweet = "Show Tweet"
-        static let SizeSetting = CGSize(width: 140.0, height: 140.0)
+        static let SizeSetting = CGSize(width: 150.0, height: 200.0)
         
         static let ColumnCountWaterfall = 3
-        static let minimumColumnSpacing:CGFloat = 2
-        static let minimumInteritemSpacing:CGFloat = 2
+        static let minimumColumnSpacing:CGFloat = 1
+        static let minimumInteritemSpacing:CGFloat = 1
         
-        static let minimumLineSpacing:CGFloat = 2
-        static let minimumInteritemSpacingFlow:CGFloat = 2
-        static let sectionInset = UIEdgeInsets (top: 2, left: 2, bottom: 2, right: 2)
+        static let minimumLineSpacing:CGFloat = 1
+        static let minimumInteritemSpacingFlow:CGFloat = 1
+        static let sectionInset = UIEdgeInsets (top: 3, left: 3, bottom: 3, right: 3)
         static let columnCount:Int = 3
     }
    
@@ -41,18 +41,11 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
             searchText = first
         }
         
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
         // Установка Layout
         setupLayout()
-        
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes
-        //self.collectionView!.registerClass(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
-        
         refreshControl.addTarget(self, action: #selector(ImagesCollectionViewController.refreshTweets(_:)), forControlEvents: .ValueChanged)
         
         collectionView?.addSubview(refreshControl)
@@ -69,13 +62,7 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
         refreshControl.endRefreshing()
     }
     
-    
-    var scale: CGFloat = 1 {
-        didSet {
-            collectionView?.collectionViewLayout.invalidateLayout()
-        }
-    }
-    
+   
     private var layoutFlow = UICollectionViewFlowLayout()
     private var layoutWaterfall = CHTCollectionViewWaterfallLayout ()
    
@@ -87,6 +74,9 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
         didSet {
             images = tweets.flatMap({$0}).map {
                 tweet in tweet.media.map{ ImageTweet(tweet: tweet, image: $0)}}.flatMap({$0})
+            images.sortInPlace { (let lowerRatio, let HigherRatio) -> Bool in
+                lowerRatio.image.aspectRatio < HigherRatio.image.aspectRatio
+            }
             collectionView?.reloadData()
         }
     }
@@ -161,17 +151,19 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
         // зазоры между ячейками и строками и
         // количество столбцов - основной параметр настройки
         
-        layoutWaterfall.columnCount = Storyboard.ColumnCountWaterfall
-        layoutWaterfall.minimumColumnSpacing = Storyboard.minimumColumnSpacing
-        layoutWaterfall.minimumInteritemSpacing = Storyboard.minimumInteritemSpacing
+        let layout = CHTCollectionViewWaterfallLayout()
+        
+        layout.columnCount = Storyboard.ColumnCountWaterfall
+        layout.minimumColumnSpacing = Storyboard.minimumColumnSpacing
+        
+        layout.sectionInset = Storyboard.sectionInset
         
         // Меняем атрибуты для FlowLayout
         // зазоры между ячейками и строками и
         // зазоры для секции
-        
-        layoutFlow.minimumInteritemSpacing = Storyboard.minimumInteritemSpacingFlow
-        layoutFlow.minimumLineSpacing = Storyboard.minimumLineSpacing
-        layoutFlow.sectionInset = Storyboard.sectionInset
+        layout.minimumInteritemSpacing = Storyboard.minimumInteritemSpacingFlow
+        //layout.minimumLineSpacing = Storyboard.minimumLineSpacing
+        layout.sectionInset = Storyboard.sectionInset
         
         // устанавливаем Waterfall layout нашему collection view
         collectionView?.collectionViewLayout = layoutFlow
@@ -194,7 +186,7 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Storyboard.reuseIdentifier, forIndexPath: indexPath) as! ImageCollectionViewCell
 
-        //cell.cache = cache
+        cell.cache = cache
         cell.tweetMedia = images[indexPath.row]
 
         return cell
@@ -202,17 +194,20 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        if collectionView.collectionViewLayout is CHTCollectionViewWaterfallLayout{
-            let newColumnNumber = Int(CGFloat(Storyboard.ColumnCountWaterfall) / scale)
+        
+        if collectionView.collectionViewLayout is CHTCollectionViewWaterfallLayout {
+            let newColumnNumber = Int(CGFloat(Storyboard.ColumnCountWaterfall))
             (collectionView.collectionViewLayout
                 as! CHTCollectionViewWaterfallLayout).columnCount =
                 newColumnNumber < 1 ? 1 :newColumnNumber
         }
-       
+        
         let ratio = CGFloat(images[indexPath.row].image.aspectRatio)
+        
         let maxCellWidth = collectionView.bounds.size.width
-        var size = CGSize(width: Storyboard.SizeSetting.width * scale,
-                          height: Storyboard.SizeSetting.height * scale)
+        
+        var size = CGSize(width: Storyboard.SizeSetting.width ,
+                          height: Storyboard.SizeSetting.height)
         if ratio > 1 {
             size.height /= ratio
         } else {
@@ -224,41 +219,4 @@ class ImagesCollectionViewController: UICollectionViewController, CHTCollectionV
         }
         return size
     }
-    /*
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let leftRightInset = self.view.frame.size.width / 14.0
-        return UIEdgeInsetsMake(0, leftRightInset, 0, leftRightInset)
-    }*/
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
-
-}
+ }
